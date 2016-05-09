@@ -71,9 +71,10 @@ graphicalVARsim <- function(
   warmup = 100,
   lbound = rep(-Inf, ncol(kappa)),
   ubound = rep(Inf, ncol(kappa)),
-  skewed = rep(0,ncol(kappa)),
+  skewed = TRUE,
   WN = FALSE,
-  tau=-1
+  tau=-1,
+  alpha=rep(0,nVar)
 ){
   
   
@@ -93,7 +94,7 @@ graphicalVARsim <- function(
 #   ubound <- (ubound - mean) / sd
 #   
 
-  if (sum(skewed==rep(0,ncol(kappa)))==ncol(kappa)){
+  if (skewed=FALSE){
     for (t in 2:totTime){
       Data[t,] <- t(beta %*% Data[t-1,])  + rmvnorm(1, rep(0,Nvar), Sigma)
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
@@ -101,7 +102,7 @@ graphicalVARsim <- function(
     }
   }else{
     for (t in 2:totTime){#Needed to round Omega to avoid error "not symmetrical"
-      Data[t,] <- t(beta %*% Data[t-1,])  + rsn(n=nVar, xi=c(0), omega=Sigma, alpha=skewed, tau=tau,  dp=NULL)[1,]
+      Data[t,] <- t(beta %*% Data[t-1,])  + rsn(n=nVar, xi=c(0), omega=Sigma, alpha=alpha, tau=tau,  dp=NULL)[1,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
