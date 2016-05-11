@@ -78,7 +78,7 @@ graphicalVARsim <- function(
   skewed = FALSE)
 ){
   
-  
+  browser()
   stopifnot(!missing(beta))
   stopifnot(!missing(kappa))  
   
