@@ -109,11 +109,7 @@ graphicalVARsim <- function(
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
   }
-  if (WN){
-    for (t in 2:totTime){
-      Data[t,] <- Data[t,] +  rmvnorm(1, rep(0,Nvar), Sigma)
-    }
-  }
+  
 #,alpha=rnorm(n = Nvar,mean = 0,sd = 7)
   
   return(Data[-seq_len(warmup), ,drop=FALSE])
