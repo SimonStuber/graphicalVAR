@@ -96,15 +96,15 @@ graphicalVARsim <- function(
 #   ubound <- (ubound - mean) / sd
 #   
 
-  if (skewed==FALSE){
+  if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- t(beta %*% Data[t-1,])  + rmvnorm(1, rep(0,Nvar), Sigma)
+      Data[t,] <- t(beta %*% Data[t-1,])  + skewthat(Sigma)
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
   }else{
     for (t in 2:totTime){#Needed to round Omega to avoid error "not symmetrical"
-      Data[t,] <- t(beta %*% Data[t-1,])  + skewthat(Sigma)
+      Data[t,] <- t(beta %*% Data[t-1,])  + rmvnorm(1, rep(0,Nvar), Sigma)
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
