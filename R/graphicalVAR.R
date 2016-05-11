@@ -8,7 +8,7 @@ computePCC <- function(x)
 
 computePDC <- function(beta,kappa){
   if (ncol(beta) == nrow(beta)+1){
-    beta <- beta[,-1,drop=FALSE]
+    beta <- beta[,-1]
   }
   sigma <- solve(kappa)
   t(beta / sqrt(diag(sigma) %o% diag(kappa) + beta^2))
@@ -183,10 +183,7 @@ function(
 
   Results$path <- lambdas
   Results$labels <- colnames(data)
-  if (is.null(Results$labels)){
-    Results$labels <- paste0("V",seq_len(ncol(data)))
-  }
-  colnames(Results$beta) <- c("1",Results$labels)
+  colnames(Results$beta) <- c(Results$labels)
   rownames(Results$beta) <- colnames(Results$kappa) <- rownames(Results$kappa) <-
   colnames(Results$PCC) <- rownames(Results$PCC) <- colnames(Results$PDC) <- rownames(Results$PDC) <-
   Results$labels
