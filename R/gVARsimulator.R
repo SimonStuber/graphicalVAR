@@ -93,15 +93,15 @@ graphicalVARsim <- function(
 #   lbound <- (lbound - mean) / sd
 #   ubound <- (ubound - mean) / sd
 #   
-  skewDat <- t(matrix(init, Nvar, totTime))
-  for (i in 1:totTime){
-    skewDat[i,]<- skewthat(Sigma)
-  }
+#  skewDat <- t(matrix(init, Nvar, totTime))
+#  for (i in 1:totTime){
+#    skewDat[i,]<- skewthat(Sigma)
+#  }
   #plot(density(skewDat[,2]))
   
   if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- t(beta %*% Data[t-1,])  +  skewDat[t,]
+      Data[t,] <- t(beta %*% Data[t-1,])  + rmvnorm(1, rep(0,Nvar), Sigma) #+  skewDat[t,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
