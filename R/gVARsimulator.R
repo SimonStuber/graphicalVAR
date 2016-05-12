@@ -100,7 +100,7 @@ graphicalVARsim <- function(
   
   if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- t(beta %*% Data[t-1,])  +  data<-rmsn(n = 1,xi =-colMeans(Data),Omega = round(Sigma,digits=1),alpha = c(-1000,0))[1,]
+      Data[t,] <- t(beta %*% Data[t-1,])  +  rmsn(n = 1,xi =-colMeans(Data),Omega = round(Sigma,digits=1),alpha = c(-1000,0))[1,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
