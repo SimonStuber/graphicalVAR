@@ -59,11 +59,11 @@ randomGVARmodel <- function(
   return(Res)
 }
 
-#skewthat <- function(Sigma){
-#  skewdist<-rmsn(n = 100000,xi = c(0,0),Omega = round(Sigma,digits=1),alpha = c(-100,0))
-#  data<-rmsn(n = 1,xi =-colMeans(skewdist),Omega = round(Sigma,digits=1),alpha = c(-100,0))[1,]
-#  return(data)
-#}
+skewthat <- function(Sigma){
+  skewdist<-rmsn(n = 100000,xi = c(0,0),Omega = round(Sigma,digits=3),alpha = c(-1000,0))
+  data<-rmsn(n = 1,xi =-colMeans(skewdist),Omega = round(Sigma,digits=3),alpha = c(-1000,0))[1,]
+  return(data)
+}
 
 graphicalVARsim <- function(
   nTime, # Number of time points
