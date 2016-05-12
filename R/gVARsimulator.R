@@ -59,11 +59,11 @@ randomGVARmodel <- function(
   return(Res)
 }
 
-skewthat <- function(Sigma,inputData){
-  skewdist<-rmsn(n = 100000,xi = c(0,0),Omega = round(Sigma,digits=1),alpha = c(-1000,0))
-  data<-rmsn(n = 1,xi =-colMeans(inputData),Omega = round(Sigma,digits=1),alpha = c(-1000,0))[1,]
-  return(data)
-}
+#skewthat <- function(Sigma,Data){
+#  skewdist<-rmsn(n = 100000,xi = c(0,0),Omega = round(Sigma,digits=1),alpha = c(-1000,0))
+#  data<-rmsn(n = 1,xi =-colMeans(inputData),Omega = round(Sigma,digits=1),alpha = c(-1000,0))[1,]
+#  return(data)
+#}
 
 graphicalVARsim <- function(
   nTime, # Number of time points
@@ -100,7 +100,7 @@ graphicalVARsim <- function(
   
   if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- t(beta %*% Data[t-1,])  + skewthat(Sigma,Data)
+      Data[t,] <- t(beta %*% Data[t-1,])  +  data<-rmsn(n = 1,xi =-colMeans(Data),Omega = round(Sigma,digits=1),alpha = c(-1000,0))[1,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
