@@ -60,7 +60,7 @@ randomGVARmodel <- function(
 }
 
 skewthat <- function(Sigma){
-  skewdist<-rmsn(n = 100000,xi = c(0,0),Omega = round(Sigma,digits=3),alpha = c(-1000,0))
+  skewdist<-rmsn(n = 1000000,xi = c(0,0),Omega = round(Sigma,digits=3),alpha = c(-1000,0))
   data<-rmsn(n = 1,xi =-colMeans(skewdist),Omega = round(Sigma,digits=3),alpha = c(-1000,0))[1,]
   return(data)
 }
@@ -89,25 +89,26 @@ graphicalVARsim <- function(
   Data <- t(matrix(init, Nvar, totTime))
   
   Sigma <- solve(kappa)
+  diag(Sigma)<-1
   
 #   lbound <- (lbound - mean) / sd
 #   ubound <- (ubound - mean) / sd
 #   
-#  skewDat <- t(matrix(init, Nvar, totTime))
-#  for (i in 1:totTime){
-#    skewDat[i,]<- skewthat(Sigma)
-#  }
+  skewDat <- t(matrix(init, Nvar, totTime))
+  for (i in 1:totTime){
+    skewDat[i,]<- skewthat(Sigma)
+  }
   #plot(density(skewDat[,2]))
   
   if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- t(beta %*% Data[t-1,])  + skewthat(Sigma)
+      Data[t,] <- mean + t(beta %*% (Data[t-1,]-mean))  + skewDat[t,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
   }else{
     for (t in 2:totTime){#Needed to round Omega to avoid error "not symmetrical"
-      Data[t,] <- t(beta %*% Data[t-1,])  + rmvnorm(1, rep(0,Nvar), Sigma)
+      Data[t,] <- mean + t(beta %*% (Data[t-1,]-mean))  + rmvnorm(1, rep(0,Nvar), Sigma)
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
