@@ -89,7 +89,6 @@ graphicalVARsim <- function(
   Data <- t(matrix(init, Nvar, totTime))
   
   Sigma <- solve(kappa)
-  diag(Sigma)<-1
   
 #   lbound <- (lbound - mean) / sd
 #   ubound <- (ubound - mean) / sd
