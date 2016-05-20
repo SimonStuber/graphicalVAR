@@ -59,11 +59,12 @@ randomGVARmodel <- function(
   return(Res)
 }
 
-skewthat <- function(Sigma){
-  skewdist<-rmsn(n = 1000000,xi = c(0,0),Omega = round(Sigma,digits=3),alpha = c(-10000,0))
-  data<-rmsn(n = 1,xi =-colMeans(skewdist),Omega = round(Sigma,digits=3),alpha = c(-10000,0))[1,]
-  return(data)
-}
+#skewthat <- function(n,Sigma,alpha =  c(-10000,0)){
+  # skewdist<-rmsn(n = 1000000,xi = c(0,0),Omega = round(Sigma,digits=3),alpha = alpha)
+  # data<-rmsn(n = n,xi =-colMeans(skewdist),Omega = round(Sigma,digits=3),alpha = alpha)
+  #data = do.call(cbind, lapply(1:ncol(Sigma),function(x)rexp(n,0.5) - mean(rexp(10000,0.5))))
+  #return(data)
+#}
 
 graphicalVARsim <- function(
   nTime, # Number of time points
@@ -77,7 +78,6 @@ graphicalVARsim <- function(
   ubound = rep(Inf, ncol(kappa)),
   skewed = FALSE){
   
-  browser()
   stopifnot(!missing(beta))
   stopifnot(!missing(kappa))  
   
@@ -98,10 +98,14 @@ graphicalVARsim <- function(
   #for (i in 1:totTime){
   #  skewDat[i,]<- skewthat(Sigma)
   #}
+  
 
   if (skewed){
+    resid<-rDist(totTime,rep(0,Nvar),cov2cor(Sigma),margins=c("norm","gamma"),
+                 param=list(list(mean=0,sd=1),list(shape=2,scale=1)))
+
     for (t in 2:totTime){
-      Data[t,] <- (t(beta %*% (Data[t-1,]))  + skewthat(Sigma)
+      Data[t,] <- t(beta %*% (Data[t-1,]))  + resid[t,]
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
