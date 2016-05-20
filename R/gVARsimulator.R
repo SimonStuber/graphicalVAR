@@ -100,7 +100,7 @@ graphicalVARsim <- function(
   #}
 
   if (skewed){
-    resid<-rDist(totTime,rep(0,Nvar),cov2cor(Sigma),margins=c("norm","gamma"),
+    resid <- rDist(totTime,rep(0,Nvar),cov2cor(Sigma),margins=c("norm","gamma"),
                  param=list(list(mean=0,sd=1),list(shape=2,scale=1)))
 
     for (t in 2:totTime){
