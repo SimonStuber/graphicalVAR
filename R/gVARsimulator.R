@@ -98,7 +98,7 @@ graphicalVARsim <- function(
   #for (i in 1:totTime){
   #  skewDat[i,]<- skewthat(Sigma)
   #}
-  
+  browser()
 
   if (skewed){
     resid<-rDist(totTime,rep(0,Nvar),cov2cor(Sigma),margins=c("norm","gamma"),
