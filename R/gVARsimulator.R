@@ -94,14 +94,14 @@ graphicalVARsim <- function(
 #   ubound <- (ubound - mean) / sd
 
      
-  skewDat <- t(matrix(init, Nvar, totTime))
-  for (i in 1:totTime){
-    skewDat[i,]<- skewthat(Sigma)
-  }
+  #skewDat <- t(matrix(init, Nvar, totTime))
+  #for (i in 1:totTime){
+  #  skewDat[i,]<- skewthat(Sigma)
+  #}
 
   if (skewed){
     for (t in 2:totTime){
-      Data[t,] <- (t(beta %*% (Data[t-1,]))  + skewthat(Sigma))/colmeans(Data)
+      Data[t,] <- ((t(beta %*% (Data[t-1,]))  + skewthat(Sigma))/colMeans(Data))-1
       Data[t,] <- ifelse(Data[t,]  < lbound, lbound, Data[t,] )
       Data[t,] <- ifelse(Data[t,]  > ubound, ubound, Data[t,] )
     }
