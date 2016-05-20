@@ -77,7 +77,7 @@ graphicalVARsim <- function(
   lbound = rep(-Inf, ncol(kappa)),
   ubound = rep(Inf, ncol(kappa)),
   skewed = FALSE){
-  
+  browser()
   stopifnot(!missing(beta))
   stopifnot(!missing(kappa))  
   
@@ -98,7 +98,6 @@ graphicalVARsim <- function(
   #for (i in 1:totTime){
   #  skewDat[i,]<- skewthat(Sigma)
   #}
-  browser()
 
   if (skewed){
     resid<-rDist(totTime,rep(0,Nvar),cov2cor(Sigma),margins=c("norm","gamma"),
